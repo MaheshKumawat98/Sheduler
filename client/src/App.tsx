@@ -5,6 +5,7 @@ import AuthProvider, { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
+import Scheduler from './pages/Scheduler';
 import Layout from './components/Layout';
 
 // Placeholder Pages for remaining views
@@ -39,15 +40,6 @@ const HomePage: React.FC = () => {
   );
 };
 
-const SchedulerPage: React.FC = () => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-white mb-2">Post Scheduler</h2>
-      <p className="text-slate-400">Schedule posts across multiple platforms.</p>
-    </div>
-  );
-};
-
 const AIComposerPage: React.FC = () => {
   return (
     <div>
@@ -71,7 +63,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<Accounts />} />
-            <Route path="/scheduler" element={<SchedulerPage />} />
+            <Route path="/scheduler" element={<Scheduler />} />
             <Route path="/ai-composer" element={<AIComposerPage />} />
           </Route>
 
