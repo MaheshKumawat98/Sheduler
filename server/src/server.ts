@@ -7,7 +7,9 @@ import authRoutes from './routes/authRoutes';
 import socialAuthRoutes from './routes/socialAuthRoutes';
 import accountRoutes from './routes/accountRoutes';
 import postRoutes from './routes/postRoutes';
+import activityRoutes from './routes/activityRoutes';
 
+// Load environment variables
 dotenv.config();
 
 // Connect to MongoDB and start background scheduler
@@ -32,10 +34,12 @@ app.use(express.json());
 app.get('/', (_req: Request, res: Response) => {
   res.send('Server is running');
 });
+
 app.use('/api/auth', authRoutes);
-app.use('/api', socialAuthRoutes);
-app.use('/api', accountRoutes);
-app.use('/api', postRoutes);
+app.use('/api/oauth', socialAuthRoutes);
+app.use('/api/accounts', accountRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/activity', activityRoutes);
 
 // Start server
 app.listen(PORT, () => {
