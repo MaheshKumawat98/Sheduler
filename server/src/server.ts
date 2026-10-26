@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
+import socialAuthRoutes from './routes/socialAuthRoutes';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Server is running');
 });
 app.use('/api/auth', authRoutes);
+app.use('/api', socialAuthRoutes);
 
 // Start server
 app.listen(PORT, () => {
