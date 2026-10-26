@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider, { useAuth } from './context/AuthContext';
+import Login from './pages/Login';
 
 // Placeholder Pages
 const HomePage: React.FC = () => {
@@ -30,25 +31,6 @@ const HomePage: React.FC = () => {
             </Link>
           </div>
         )}
-      </div>
-    </div>
-  );
-};
-
-const LoginPage: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-8 text-center shadow-lg">
-        <h2 className="text-2xl font-bold text-purple-400 mb-2">Sign In</h2>
-        <p className="text-slate-400 text-sm mb-6">Login placeholder page</p>
-        <Link to="/" className="text-purple-400 hover:underline text-sm">
-          &larr; Back to Home
-        </Link>
       </div>
     </div>
   );
@@ -118,7 +100,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<Login />} />
 
           {/* Protected Routes */}
           <Route
