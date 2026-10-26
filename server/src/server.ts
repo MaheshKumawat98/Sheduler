@@ -5,6 +5,7 @@ import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
 import socialAuthRoutes from './routes/socialAuthRoutes';
 import accountRoutes from './routes/accountRoutes';
+import postRoutes from './routes/postRoutes';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.get('/', (_req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api', socialAuthRoutes);
 app.use('/api', accountRoutes);
+app.use('/api', postRoutes);
 
 // Start server
 app.listen(PORT, () => {
