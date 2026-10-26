@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider, { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
+import Layout from './components/Layout';
 
 // Placeholder Pages
 const HomePage: React.FC = () => {
@@ -38,8 +39,8 @@ const HomePage: React.FC = () => {
 
 const DashboardPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8">
-      <h1 className="text-3xl font-bold text-purple-400 mb-4">Dashboard</h1>
+    <div>
+      <h2 className="text-2xl font-bold text-white mb-2">Dashboard Overview</h2>
       <p className="text-slate-400">Welcome to your social media automation dashboard.</p>
     </div>
   );
@@ -47,8 +48,8 @@ const DashboardPage: React.FC = () => {
 
 const AccountsPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8">
-      <h1 className="text-3xl font-bold text-purple-400 mb-4">Connected Accounts</h1>
+    <div>
+      <h2 className="text-2xl font-bold text-white mb-2">Connected Accounts</h2>
       <p className="text-slate-400">Manage your connected social networks.</p>
     </div>
   );
@@ -56,8 +57,8 @@ const AccountsPage: React.FC = () => {
 
 const SchedulerPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8">
-      <h1 className="text-3xl font-bold text-purple-400 mb-4">Post Scheduler</h1>
+    <div>
+      <h2 className="text-2xl font-bold text-white mb-2">Post Scheduler</h2>
       <p className="text-slate-400">Schedule posts across multiple platforms.</p>
     </div>
   );
@@ -65,31 +66,11 @@ const SchedulerPage: React.FC = () => {
 
 const AIComposerPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8">
-      <h1 className="text-3xl font-bold text-purple-400 mb-4">AI Composer</h1>
+    <div>
+      <h2 className="text-2xl font-bold text-white mb-2">AI Composer</h2>
       <p className="text-slate-400">Generate creative posts and images using AI.</p>
     </div>
   );
-};
-
-// Protected Route Wrapper
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
-        <span className="ml-3 text-sm text-slate-400">Loading...</span>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
 };
 
 function App() {
@@ -102,39 +83,13 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/accounts"
-            element={
-              <ProtectedRoute>
-                <AccountsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/scheduler"
-            element={
-              <ProtectedRoute>
-                <SchedulerPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ai-composer"
-            element={
-              <ProtectedRoute>
-                <AIComposerPage />
-              </ProtectedRoute>
-            }
-          />
+          {/* Protected Routes wrapped in Layout */}
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/accounts" element={<AccountsPage />} />
+            <Route path="/scheduler" element={<SchedulerPage />} />
+            <Route path="/ai-composer" element={<AIComposerPage />} />
+          </Route>
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
