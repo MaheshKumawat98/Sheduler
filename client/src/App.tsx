@@ -1,52 +1,27 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider, { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
 import Scheduler from './pages/Scheduler';
+import AIComposer from './pages/AIComposer';
 import Layout from './components/Layout';
 
-// Placeholder Pages for remaining views
-const HomePage: React.FC = () => {
-  const { isAuthenticated, user, logout } = useAuth();
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-6 text-center shadow-lg">
-        <h1 className="text-2xl font-bold text-purple-400 mb-2">Social Media Platform</h1>
-        <p className="text-slate-400 mb-6">Automate, create, and schedule posts across all your social channels.</p>
-        {isAuthenticated ? (
-          <div className="space-y-3">
-            <p className="text-sm text-slate-300">Welcome, <span className="text-purple-300 font-semibold">{user?.name}</span></p>
-            <div className="flex justify-center gap-3">
-              <Link to="/dashboard" className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm transition">
-                Go to Dashboard
-              </Link>
-              <button onClick={logout} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition">
-                Log Out
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex justify-center gap-3">
-            <Link to="/login" className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm transition">
-              Log In
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+// Root redirect handler
+const RootRedirect: React.FC = () => {
+  const { isAuthenticated, isLoading } = useAuth();
 
-const AIComposerPage: React.FC = () => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-white mb-2">AI Composer</h2>
-      <p className="text-slate-400">Generate creative posts and images using AI.</p>
-    </div>
-  );
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100">
+        <div className="animate-spin rounded-full h-10 w-10 border-3 border-purple-500/20 border-t-purple-500" />
+      </div>
+    );
+  }
+
+  return <Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />;
 };
 
 function App() {
@@ -56,7 +31,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<RootRedirect />} />
           <Route path="/login" element={<Login />} />
 
           {/* Protected Routes wrapped in Layout */}
@@ -64,7 +39,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/scheduler" element={<Scheduler />} />
-            <Route path="/ai-composer" element={<AIComposerPage />} />
+            <Route path="/ai-composer" element={<AIComposer />} />
           </Route>
 
           {/* Fallback */}

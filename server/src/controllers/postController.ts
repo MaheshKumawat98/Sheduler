@@ -223,8 +223,8 @@ export const schedulePost = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    let mediaUrl: string | undefined;
-    let mediaType: 'image' | 'video' | undefined;
+    let mediaUrl: string | undefined = req.body.mediaUrl;
+    let mediaType: 'image' | 'video' | undefined = req.body.mediaType || (req.body.mediaUrl ? 'image' : undefined);
 
     if (req.file) {
       const uploadResult = await uploadBufferToCloudinary(req.file);
