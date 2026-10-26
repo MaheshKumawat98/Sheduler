@@ -3,9 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider, { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 
-// Placeholder Pages
+// Placeholder Pages for remaining views
 const HomePage: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   return (
@@ -33,15 +34,6 @@ const HomePage: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
-  );
-};
-
-const DashboardPage: React.FC = () => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-white mb-2">Dashboard Overview</h2>
-      <p className="text-slate-400">Welcome to your social media automation dashboard.</p>
     </div>
   );
 };
@@ -85,7 +77,7 @@ function App() {
 
           {/* Protected Routes wrapped in Layout */}
           <Route element={<Layout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<AccountsPage />} />
             <Route path="/scheduler" element={<SchedulerPage />} />
             <Route path="/ai-composer" element={<AIComposerPage />} />
