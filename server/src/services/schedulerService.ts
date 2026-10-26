@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import Post from '../models/Post';
 import Account from '../models/Account';
 import ActivityLog from '../models/ActivityLog';
-import zerno from '../config/zerno';
+import { createPost } from '../config/zerno';
 
 /**
  * Initializes background cron scheduler to check and publish due posts every minute
@@ -53,7 +53,7 @@ export const initScheduler = (): void => {
             continue;
           }
 
-          // STEP 4 — Build Zerno publishing payload
+          // STEP 4 — Build Zernio publishing payload
           const payload: any = {
             content: post.content,
             publish: true,
@@ -72,17 +72,14 @@ export const initScheduler = (): void => {
               : {}),
           };
 
-          // STEP 5 — Call zerno.posts.createPost() with payload
-          const result = await (zerno.posts.createPost as any)({
-            body: payload,
-            ...payload,
-          });
+          // STEP 5 — Call createPost(payload) from Zernio client
+          const result = await createPost(payload);
 
           if (result && result.error) {
             throw new Error(
               typeof result.error === 'string'
                 ? result.error
-                : result.error.message || 'Zerno publishing error'
+                : result.error.message || 'Zernio publishing error'
             );
           }
 

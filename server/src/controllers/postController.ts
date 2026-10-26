@@ -7,13 +7,7 @@ import Generation from '../models/Generation';
 import cloudinary from '../config/cloudinary';
 
 /**
- * Sleep helper for asynchronous delays (e.g. polling Leonardo API)
- */
-export const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
-/**
- * Helper to upload buffer to Cloudinary via upload_stream
+ * Helper to upload multer file buffer to Cloudinary via upload_stream
  */
 const uploadBufferToCloudinary = (
   file: Express.Multer.File
@@ -37,7 +31,31 @@ const uploadBufferToCloudinary = (
 };
 
 /**
- * @desc    Generate AI social media post (Gemini text + optional Leonardo image)
+ * Helper to upload raw binary image buffer to Cloudinary via upload_stream
+ */
+const uploadImageBufferToCloudinary = (
+  buffer: Buffer,
+  folder: string = 'social_media_ai'
+): Promise<UploadApiResponse> => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'image',
+        folder,
+      },
+      (error, result) => {
+        if (error || !result) {
+          return reject(error || new Error('Cloudinary upload failed'));
+        }
+        resolve(result);
+      }
+    );
+    uploadStream.end(buffer);
+  });
+};
+
+/**
+ * @desc    Generate AI social media post (Gemini text + optional Hugging Face image)
  * @route   POST /api/posts/generate
  * @access  Protected
  */
@@ -85,82 +103,40 @@ export const generatePost = async (req: Request, res: Response): Promise<void> =
     let mediaUrl: string | undefined;
     let mediaType: string | undefined;
 
-    // STEP 2 & 3 & 4 — Leonardo image generation & Cloudinary upload (if generateImage is true)
+    // STEP 2 & 3 & 4 — Hugging Face image generation & Cloudinary upload (if generateImage is true)
     const shouldGenerateImage =
       generateImage === true || generateImage === 'true';
 
     if (shouldGenerateImage) {
-      const leonardoApiKey = process.env.LEONARDO_API_KEY;
-      if (!leonardoApiKey) {
-        throw new Error('LEONARDO_API_KEY is not defined in environment');
+      const huggingFaceApiKey = process.env.HUGGINGFACE_API_KEY;
+      if (!huggingFaceApiKey) {
+        throw new Error('HUGGINGFACE_API_KEY is not defined in environment');
       }
 
-      // STEP 2 — Request generation
-      const leoInitResponse = await axios.post(
-        'https://cloud.leonardo.ai/api/rest/v1/generations',
+      // Send POST request to Hugging Face Inference API
+      const hfResponse = await axios.post(
+        'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0',
         {
-          prompt: imagePrompt || prompt,
-          num_images: 1,
-          width: 1024,
-          height: 1024,
+          inputs: imagePrompt || prompt,
         },
         {
           headers: {
-            Authorization: `Bearer ${leonardoApiKey}`,
+            Authorization: `Bearer ${huggingFaceApiKey}`,
             'Content-Type': 'application/json',
-            Accept: 'application/json',
           },
+          responseType: 'arraybuffer',
         }
       );
 
-      const generationId =
-        leoInitResponse.data?.sdGenerationJob?.generationId ||
-        leoInitResponse.data?.generationId;
+      // Convert binary response to Buffer and upload to Cloudinary using upload_stream
+      const imageBuffer = Buffer.from(hfResponse.data);
+      const uploadResult = await uploadImageBufferToCloudinary(
+        imageBuffer,
+        'social_media_ai'
+      );
 
-      if (!generationId) {
-        throw new Error('Could not obtain generationId from Leonardo.ai API');
-      }
-
-      // STEP 3 — Poll Leonardo for completion (every 5 seconds, max 20 retries)
-      let temporaryImageUrl: string | undefined;
-      const maxRetries = 20;
-
-      for (let attempt = 0; attempt < maxRetries; attempt++) {
-        await sleep(5000);
-
-        const pollResponse = await axios.get(
-          `https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${leonardoApiKey}`,
-              Accept: 'application/json',
-            },
-          }
-        );
-
-        const genData =
-          pollResponse.data?.generations_by_pk || pollResponse.data;
-        const status = genData?.status;
-
-        if (status === 'COMPLETE') {
-          const generatedImages = genData?.generated_images || [];
-          if (generatedImages.length > 0 && generatedImages[0].url) {
-            temporaryImageUrl = generatedImages[0].url;
-          }
-          break;
-        } else if (status === 'FAILED') {
-          throw new Error('Leonardo.ai image generation status reported FAILED');
-        }
-      }
-
-      // STEP 4 — Upload Leonardo image to Cloudinary
-      if (temporaryImageUrl) {
-        const uploadResult = await cloudinary.uploader.upload(temporaryImageUrl, {
-          folder: 'social_media_ai',
-        });
-        mediaUrl = uploadResult.secure_url;
-        mediaType = 'image';
-      }
+      mediaUrl = uploadResult.secure_url;
+      mediaType = 'image';
     }
 
     // STEP 5 — Save Generation document

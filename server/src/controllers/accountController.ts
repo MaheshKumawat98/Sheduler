@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Account from '../models/Account';
-import zerno from '../config/zerno';
+import { deleteAccount } from '../config/zerno';
 
 /**
  * @desc    Get all connected accounts for the authenticated user
@@ -50,17 +50,12 @@ export const disconnectAccount = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Call Zerno to delete the account
+    // Call Zernio to delete the account
     if (account.zernoAccountId) {
       try {
-        await (zerno.accounts.deleteAccount as any)({
-          path: {
-            accountId: account.zernoAccountId,
-          },
-          accountId: account.zernoAccountId,
-        });
+        await deleteAccount(account.zernoAccountId);
       } catch (zernoErr) {
-        console.warn('Warning: Could not delete account on Zerno SDK:', zernoErr);
+        console.warn('Warning: Could not delete account on Zernio:', zernoErr);
       }
     }
 

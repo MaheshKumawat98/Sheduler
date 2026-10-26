@@ -1,7 +1,12 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 import Account from '../models/Account';
-import zerno from '../config/zerno';
+import {
+  getProfiles,
+  createProfile,
+  getConnectUrl,
+  listAccounts,
+} from '../config/zerno';
 
 /**
  * Helper function to get or create a Zerno profile for a user
@@ -15,28 +20,56 @@ export const getOrCreateZernoProfile = async (userId: string): Promise<any> => {
   // If user already has a zernoProfileId, attempt to fetch that profile
   if (user.zernoProfileId) {
     try {
-      const existing = await zerno.profiles.getProfile({
-        path: { profileId: user.zernoProfileId },
-      });
-      if (existing.data?.profile) {
-        return existing.data.profile;
+      const data = await getProfiles();
+      const profiles: any[] =
+        data?.profiles ||
+        data?.data?.profiles ||
+        (Array.isArray(data?.data) ? data.data : []) ||
+        (Array.isArray(data) ? data : []);
+      const existing = profiles.find(
+        (p: any) => (p._id || p.id) === user.zernoProfileId
+      );
+      if (existing) {
+        return existing;
       }
-      return existing.data || { _id: user.zernoProfileId };
+      return { _id: user.zernoProfileId, id: user.zernoProfileId };
     } catch (error) {
       console.warn('Could not retrieve existing Zerno profile, returning stored profileId:', error);
-      return { _id: user.zernoProfileId };
+      return { _id: user.zernoProfileId, id: user.zernoProfileId };
     }
   }
 
   // Otherwise, create a new Zerno profile
-  const profileResponse = await zerno.profiles.createProfile({
-    body: {
-      name: user.name || `User ${user._id}`,
-    },
-  });
+  const profileName = user.name || `User ${user._id}`;
+  let createdProfile: any;
 
-  const createdProfile = profileResponse.data?.profile || (profileResponse.data as any);
-  const newProfileId = createdProfile?._id || (createdProfile as any)?.id;
+  try {
+    const profileResponse = await createProfile(profileName);
+    createdProfile =
+      profileResponse?.profile ||
+      profileResponse?.data?.profile ||
+      profileResponse?.data ||
+      profileResponse;
+  } catch (createErr: any) {
+    try {
+      const data = await getProfiles();
+      const profiles: any[] =
+        data?.profiles ||
+        data?.data?.profiles ||
+        (Array.isArray(data?.data) ? data.data : []) ||
+        (Array.isArray(data) ? data : []);
+      const existing = profiles.find((p: any) => p.name === profileName);
+      if (existing) {
+        createdProfile = existing;
+      } else {
+        throw createErr;
+      }
+    } catch {
+      throw createErr;
+    }
+  }
+
+  const newProfileId = createdProfile?._id || createdProfile?.id;
 
   if (newProfileId) {
     user.zernoProfileId = newProfileId;
@@ -77,26 +110,22 @@ export const getOAuthUrl = async (req: Request, res: Response): Promise<void> =>
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     const redirectUrl = `${clientUrl}/accounts`;
 
-    const response = await (zerno.connect.getConnectUrl as any)({
-      path: {
-        platform: platform.toLowerCase(),
-      },
-      query: {
-        profileId: zernoProfileId,
-        redirect_url: redirectUrl,
-      },
-    });
+    const data = await getConnectUrl(
+      zernoProfileId,
+      platform.toLowerCase(),
+      redirectUrl
+    );
 
     const url =
-      response.data?.authUrl ||
-      (response.data as any)?.url ||
-      (response as any)?.authUrl ||
-      (response as any)?.url;
+      data?.authUrl ||
+      data?.url ||
+      data?.data?.authUrl ||
+      data?.data?.url;
 
     if (!url) {
       res.status(500).json({
         message: 'Failed to generate OAuth connect URL',
-        error: response.error || response.data,
+        error: data?.error || data,
       });
       return;
     }
@@ -128,16 +157,13 @@ export const syncAccounts = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const response = await zerno.accounts.listAccounts({
-      query: {
-        profileId: zernoProfileId,
-      },
-    });
+    const data = await listAccounts(zernoProfileId);
 
     const zernoAccounts: any[] =
-      response.data?.accounts ||
-      (response as any)?.accounts ||
-      (Array.isArray(response.data) ? response.data : []);
+      data?.accounts ||
+      data?.data?.accounts ||
+      (Array.isArray(data?.data) ? data.data : []) ||
+      (Array.isArray(data) ? data : []);
 
     for (const acc of zernoAccounts) {
       const zernoAccountId = acc._id || acc.id;
