@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/db';
+import initScheduler from './services/schedulerService';
 import authRoutes from './routes/authRoutes';
 import socialAuthRoutes from './routes/socialAuthRoutes';
 import accountRoutes from './routes/accountRoutes';
@@ -9,8 +10,10 @@ import postRoutes from './routes/postRoutes';
 
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB and start background scheduler
+connectDB().then(() => {
+  initScheduler();
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
