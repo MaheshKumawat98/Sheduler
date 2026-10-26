@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import AuthProvider, { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Accounts from './pages/Accounts';
 import Layout from './components/Layout';
 
 // Placeholder Pages for remaining views
@@ -34,15 +35,6 @@ const HomePage: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
-  );
-};
-
-const AccountsPage: React.FC = () => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-white mb-2">Connected Accounts</h2>
-      <p className="text-slate-400">Manage your connected social networks.</p>
     </div>
   );
 };
@@ -78,7 +70,7 @@ function App() {
           {/* Protected Routes wrapped in Layout */}
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/accounts" element={<AccountsPage />} />
+            <Route path="/accounts" element={<Accounts />} />
             <Route path="/scheduler" element={<SchedulerPage />} />
             <Route path="/ai-composer" element={<AIComposerPage />} />
           </Route>
