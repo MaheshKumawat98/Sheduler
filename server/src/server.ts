@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
 import socialAuthRoutes from './routes/socialAuthRoutes';
+import accountRoutes from './routes/accountRoutes';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get('/', (_req: Request, res: Response) => {
 });
 app.use('/api/auth', authRoutes);
 app.use('/api', socialAuthRoutes);
+app.use('/api', accountRoutes);
 
 // Start server
 app.listen(PORT, () => {
