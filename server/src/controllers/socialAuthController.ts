@@ -58,7 +58,10 @@ export const getOrCreateZernoProfile = async (userId: string): Promise<any> => {
         data?.data?.profiles ||
         (Array.isArray(data?.data) ? data.data : []) ||
         (Array.isArray(data) ? data : []);
-      const existing = profiles.find((p: any) => p.name === profileName);
+      const existing =
+        profiles.find((p: any) => p.name === profileName) ||
+        profiles.find((p: any) => p.isDefault) ||
+        profiles[0];
       if (existing) {
         createdProfile = existing;
       } else {
@@ -131,9 +134,13 @@ export const getOAuthUrl = async (req: Request, res: Response): Promise<void> =>
     }
 
     res.status(200).json({ url });
-  } catch (error) {
-    console.error('Error in getOAuthUrl:', error);
-    res.status(500).json({ message: 'Server error generating OAuth URL' });
+  } catch (error: any) {
+    console.error('Error in getOAuthUrl:', error?.response?.data || error?.message || error);
+    const message =
+      error?.response?.data?.error ||
+      error?.response?.data?.message ||
+      'Server error generating OAuth URL';
+    res.status(error?.response?.status || 500).json({ message });
   }
 };
 

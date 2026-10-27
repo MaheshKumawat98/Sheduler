@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const ZERNIO_BASE_URL = 'https://api.zernio.com/v1';
+export const ZERNIO_BASE_URL = 'https://zernio.com/api/v1';
 export const BASE_URL = ZERNIO_BASE_URL;
 
 export const getHeaders = () => ({
@@ -49,7 +49,7 @@ export const createProfile = async (name: string): Promise<any> => {
 
 /**
  * Get OAuth connect URL for a platform
- * GET /profiles/{profileId}/connect?platform=X&redirectUrl=Y
+ * GET /connect/{platform}?profileId={profileId}&redirect_url={redirectUrl}
  */
 export const getConnectUrl = async (
   profileId: string,
@@ -57,9 +57,9 @@ export const getConnectUrl = async (
   redirectUrl: string
 ): Promise<any> => {
   const response = await axios.get(
-    `${ZERNIO_BASE_URL}/profiles/${profileId}/connect`,
+    `${ZERNIO_BASE_URL}/connect/${platform.toLowerCase()}`,
     {
-      params: { platform, redirectUrl },
+      params: { profileId, redirect_url: redirectUrl },
       headers: getHeaders(),
     }
   );
@@ -68,15 +68,13 @@ export const getConnectUrl = async (
 
 /**
  * List accounts connected to a profile
- * GET /profiles/{profileId}/accounts
+ * GET /accounts?profileId={profileId}
  */
 export const listAccounts = async (profileId: string): Promise<any> => {
-  const response = await axios.get(
-    `${ZERNIO_BASE_URL}/profiles/${profileId}/accounts`,
-    {
-      headers: getHeaders(),
-    }
-  );
+  const response = await axios.get(`${ZERNIO_BASE_URL}/accounts`, {
+    params: { profileId },
+    headers: getHeaders(),
+  });
   return response.data;
 };
 
