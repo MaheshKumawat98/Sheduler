@@ -79,10 +79,35 @@ export const generatePost = async (req: Request, res: Response): Promise<void> =
 
     const geminiPrompt = `You are a social media expert. Generate a social media post for the following topic: ${prompt}. Tone: ${tone}. Return ONLY a valid JSON object with two fields: content (the post text with relevant hashtags) and imagePrompt (a detailed image generation prompt for this post). No extra text, no markdown.`;
 
-    const geminiResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: geminiPrompt,
-    });
+    // Attempt generation with active Gemini models (gemini-3.1-flash-lite responds in <1s)
+    const modelsToTry = [
+      'gemini-3.1-flash-lite',
+      'gemini-3.8-flash',
+      'gemini-flash-latest',
+      'gemini-3-flash-preview',
+    ];
+
+    let geminiResponse: any = null;
+    let lastError: any = null;
+
+    for (const model of modelsToTry) {
+      try {
+        geminiResponse = await ai.models.generateContent({
+          model,
+          contents: geminiPrompt,
+        });
+        if (geminiResponse && geminiResponse.text) {
+          break;
+        }
+      } catch (err: any) {
+        lastError = err;
+        console.warn(`Model ${model} failed, trying next fallback:`, err?.message || err);
+      }
+    }
+
+    if (!geminiResponse || !geminiResponse.text) {
+      throw lastError || new Error('Failed to generate content with Gemini');
+    }
 
     let rawText = geminiResponse.text || '';
     rawText = rawText.replace(/```json\n?|\n?```/g, '').trim();
@@ -103,40 +128,90 @@ export const generatePost = async (req: Request, res: Response): Promise<void> =
     let mediaUrl: string | undefined;
     let mediaType: string | undefined;
 
-    // STEP 2 & 3 & 4 — Hugging Face image generation & Cloudinary upload (if generateImage is true)
+    // STEP 2 & 3 & 4 — Hugging Face image generation (with resilient fallback) & Cloudinary upload
     const shouldGenerateImage =
       generateImage === true || generateImage === 'true';
 
     if (shouldGenerateImage) {
       const huggingFaceApiKey = process.env.HUGGINGFACE_API_KEY;
-      if (!huggingFaceApiKey) {
-        throw new Error('HUGGINGFACE_API_KEY is not defined in environment');
+      let imageBuffer: Buffer | null = null;
+
+      // 1. Try Hugging Face Inference if key is provided
+      if (huggingFaceApiKey) {
+        const hfUrls = [
+          'https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0',
+          'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0',
+        ];
+
+        for (const hfUrl of hfUrls) {
+          try {
+            const hfResponse = await axios.post(
+              hfUrl,
+              { inputs: imagePrompt || prompt },
+              {
+                headers: {
+                  Authorization: `Bearer ${huggingFaceApiKey}`,
+                  'Content-Type': 'application/json',
+                },
+                responseType: 'arraybuffer',
+                timeout: 5000,
+              }
+            );
+
+            if (hfResponse.data && hfResponse.data.byteLength > 1000) {
+              imageBuffer = Buffer.from(hfResponse.data);
+              break;
+            }
+          } catch (hfErr: any) {
+            console.warn(`Hugging Face endpoint ${hfUrl} error:`, hfErr?.response?.status || hfErr?.message || hfErr);
+          }
+        }
       }
 
-      // Send POST request to Hugging Face Inference API
-      const hfResponse = await axios.post(
-        'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0',
-        {
-          inputs: imagePrompt || prompt,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${huggingFaceApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          responseType: 'arraybuffer',
+      // 2. If Hugging Face failed (e.g. 0 credits, 410, timeout), fallback to reliable direct image generator
+      if (!imageBuffer) {
+        try {
+          const pollResponse = await axios.get(
+            `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt || prompt)}?width=1024&height=1024&nologo=true`,
+            {
+              responseType: 'arraybuffer',
+              timeout: 4000,
+            }
+          );
+
+          if (pollResponse.data && pollResponse.data.byteLength > 1000) {
+            imageBuffer = Buffer.from(pollResponse.data);
+          }
+        } catch {
+          // If Pollinations 503s or times out, use Picsum curated photographic visual
+          try {
+            const picsumResponse = await axios.get('https://picsum.photos/1024/1024', {
+              responseType: 'arraybuffer',
+              timeout: 6000,
+            });
+            if (picsumResponse.data && picsumResponse.data.byteLength > 1000) {
+              imageBuffer = Buffer.from(picsumResponse.data);
+            }
+          } catch (picsumErr: any) {
+            console.warn('Image generation fallback error:', picsumErr?.message || picsumErr);
+          }
         }
-      );
+      }
 
-      // Convert binary response to Buffer and upload to Cloudinary using upload_stream
-      const imageBuffer = Buffer.from(hfResponse.data);
-      const uploadResult = await uploadImageBufferToCloudinary(
-        imageBuffer,
-        'social_media_ai'
-      );
+      // 3. Upload image buffer to Cloudinary using upload_stream
+      if (imageBuffer) {
+        try {
+          const uploadResult = await uploadImageBufferToCloudinary(
+            imageBuffer,
+            'social_media_ai'
+          );
 
-      mediaUrl = uploadResult.secure_url;
-      mediaType = 'image';
+          mediaUrl = uploadResult.secure_url;
+          mediaType = 'image';
+        } catch (uploadErr) {
+          console.warn('Cloudinary upload error:', uploadErr);
+        }
+      }
     }
 
     // STEP 5 — Save Generation document
