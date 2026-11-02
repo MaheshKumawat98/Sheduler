@@ -29,9 +29,10 @@ const PLATFORMS = [
 ];
 
 const LOADING_MESSAGES = [
-  'Connecting to AI...',
-  'Generating your content...',
-  'Almost ready...',
+  'Connecting to AI engine...',
+  'Crafting captivating copy...',
+  'Polishing hashtags and voice tone...',
+  'Almost ready to preview...',
 ];
 
 const AIComposer: React.FC = () => {
@@ -174,16 +175,16 @@ const AIComposer: React.FC = () => {
   return (
     <div className="space-y-10 animate-fade-in max-w-5xl mx-auto">
       {/* SECTION 1 — AI Generation Form */}
-      <section className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-md">
-        <div className="flex items-center gap-3 pb-6 border-b border-slate-800">
-          <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400">
+      <section className="bg-white border border-indigo-100/80 rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-950/5">
+        <div className="flex items-center gap-3.5 pb-6 border-b border-indigo-100/70">
+          <div className="p-2.5 rounded-2xl bg-orange-50 text-[#f97316]">
             <Sparkles className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-indigo-950 tracking-tight">
               AI Post Composer
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               Generate engaging social media content with AI. Powered by Google Gemini and Leonardo.ai.
             </p>
           </div>
@@ -192,7 +193,7 @@ const AIComposer: React.FC = () => {
         <form onSubmit={handleGenerate} className="mt-6 space-y-6">
           {/* Prompt Textarea */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
               Topic or Instructions
             </label>
             <textarea
@@ -201,13 +202,13 @@ const AIComposer: React.FC = () => {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Describe what you want to post about... (e.g. 'Announcing the launch of our new developer tools suite next Monday with early-bird discounts')"
-              className="w-full p-4 bg-slate-950/70 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition resize-none"
+              className="w-full p-4 bg-slate-50/60 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 transition resize-none"
             />
           </div>
 
           {/* Tone Selector */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2.5">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
               Select Tone of Voice
             </label>
             <div className="flex flex-wrap gap-2.5">
@@ -218,10 +219,10 @@ const AIComposer: React.FC = () => {
                     key={t}
                     type="button"
                     onClick={() => setTone(t)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition border ${
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition border cursor-pointer ${
                       isSelected
-                        ? 'bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-900/30'
-                        : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
+                        ? 'bg-gradient-to-r from-[#5c4ce9] to-[#5143e2] text-white border-transparent shadow-md shadow-indigo-600/20'
+                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-indigo-50/50 hover:text-indigo-950 hover:border-indigo-200'
                     }`}
                   >
                     {t}
@@ -232,17 +233,17 @@ const AIComposer: React.FC = () => {
           </div>
 
           {/* Image Generation Toggle */}
-          <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4.5 rounded-2xl bg-indigo-50/40 border border-indigo-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 shrink-0 mt-0.5">
+              <div className="p-2 rounded-xl bg-white shadow-xs text-[#5c4ce9] shrink-0 mt-0.5">
                 <Wand2 className="h-5 w-5" />
               </div>
               <div>
-                <span className="text-sm font-bold text-white block">
+                <span className="text-sm font-bold text-indigo-950 block">
                   Generate AI Image (Leonardo.ai)
                 </span>
-                <p className="text-xs text-amber-400/90 flex items-center gap-1 mt-0.5">
-                  <AlertCircle className="h-3 w-3" />
+                <p className="text-xs text-amber-600 font-medium flex items-center gap-1 mt-0.5">
+                  <AlertCircle className="h-3.5 w-3.5" />
                   Image generation may take 1-2 minutes to render
                 </p>
               </div>
@@ -256,7 +257,7 @@ const AIComposer: React.FC = () => {
                 onChange={(e) => setGenerateImage(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+              <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#5c4ce9]"></div>
             </label>
           </div>
 
@@ -264,12 +265,12 @@ const AIComposer: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition shadow-lg shadow-purple-900/40 flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.99]"
+            className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white btn-primary-orange flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
-                <span>Generating...</span>
+                <span>Generating Content...</span>
               </>
             ) : (
               <>
@@ -282,14 +283,14 @@ const AIComposer: React.FC = () => {
 
         {/* Animated Loading Card during generation */}
         {loading && (
-          <div className="mt-6 p-6 rounded-xl bg-purple-950/20 border border-purple-500/30 text-center animate-pulse">
-            <div className="inline-flex p-3 rounded-full bg-purple-500/10 text-purple-400 mb-3 animate-spin">
+          <div className="mt-6 p-6 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 text-center animate-pulse">
+            <div className="inline-flex p-3 rounded-full bg-white shadow-sm text-[#5c4ce9] mb-3 animate-spin">
               <Sparkles className="h-6 w-6" />
             </div>
-            <h4 className="text-sm font-bold text-purple-200">
+            <h4 className="text-sm font-bold text-indigo-950">
               {LOADING_MESSAGES[loadingMsgIndex]}
             </h4>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               {generateImage
                 ? 'Creating textual copy and rendering 1024x1024 artwork...'
                 : 'Formulating optimal copy, tone, and hashtags...'}
@@ -300,23 +301,23 @@ const AIComposer: React.FC = () => {
 
       {/* SECTION 2 — Generation Result (only show if result exists) */}
       {result && (
-        <section className="bg-slate-900/90 border border-slate-800 border-t-4 border-t-purple-500 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-md animate-fade-in">
+        <section className="bg-white border-2 border-indigo-100 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fade-in">
           {/* Header */}
-          <div className="flex items-center justify-between pb-5 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-5 border-b border-indigo-100/70">
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-              <h2 className="text-lg font-bold text-white">Generated Content</h2>
+              <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+              <h2 className="text-lg font-black text-indigo-950">Generated Content</h2>
             </div>
 
             <button
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-200 transition cursor-pointer"
               title="Copy to clipboard"
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                  <span className="text-emerald-600">Copied</span>
                 </>
               ) : (
                 <>
@@ -330,34 +331,34 @@ const AIComposer: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 items-start">
             {/* Left side: Post content & image preview */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80">
-                <p className="text-sm text-slate-100 whitespace-pre-wrap leading-relaxed">
+              <div className="p-5 rounded-2xl bg-indigo-50/30 border border-indigo-100/80">
+                <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed font-medium">
                   {result.content}
                 </p>
               </div>
 
               {result.mediaUrl && (
-                <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 max-h-96 flex items-center justify-center">
+                <div className="rounded-2xl overflow-hidden border border-indigo-100 bg-white max-h-96 flex items-center justify-center shadow-sm">
                   <img
                     src={result.mediaUrl}
                     alt="AI Generated Artwork"
-                    className="w-full h-auto max-h-96 object-cover rounded-xl"
+                    className="w-full h-auto max-h-96 object-cover rounded-2xl"
                   />
                 </div>
               )}
             </div>
 
             {/* Right side: Schedule Form */}
-            <div className="lg:col-span-5 p-5 rounded-xl bg-slate-950/70 border border-slate-800/80">
-              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-purple-400" />
+            <div className="lg:col-span-5 p-5 rounded-2xl bg-indigo-50/40 border border-indigo-100/80">
+              <h3 className="text-sm font-black text-indigo-950 mb-4 flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-[#5c4ce9]" />
                 Schedule this Post
               </h3>
 
               <form onSubmit={handleScheduleGenerated} className="space-y-4">
                 {/* Platform Selector */}
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
                     Select Platforms
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -368,10 +369,10 @@ const AIComposer: React.FC = () => {
                           key={plat.id}
                           type="button"
                           onClick={() => handlePlatformToggle(plat.id)}
-                          className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border ${
+                          className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border cursor-pointer ${
                             isSelected
-                              ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                              : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
+                              ? 'bg-gradient-to-r from-[#5c4ce9] to-[#5143e2] text-white border-transparent shadow-md shadow-indigo-600/20'
+                              : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-200 hover:text-indigo-950'
                           }`}
                         >
                           {isSelected && <Check className="h-3 w-3" />}
@@ -385,8 +386,8 @@ const AIComposer: React.FC = () => {
                 {/* Date and Time pickers */}
                 <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-purple-400" />
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1">
+                      <Calendar className="h-3 w-3 text-[#5c4ce9]" />
                       Date
                     </label>
                     <input
@@ -395,13 +396,13 @@ const AIComposer: React.FC = () => {
                       value={scheduledDate}
                       min={new Date().toISOString().split('T')[0]}
                       onChange={(e) => setScheduledDate(e.target.value)}
-                      className="w-full px-2.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:ring-1 focus:ring-purple-500"
+                      className="w-full px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs font-semibold focus:outline-none focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-purple-400" />
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1">
+                      <Clock className="h-3 w-3 text-[#f97316]" />
                       Time
                     </label>
                     <input
@@ -409,7 +410,7 @@ const AIComposer: React.FC = () => {
                       required
                       value={scheduledTime}
                       onChange={(e) => setScheduledTime(e.target.value)}
-                      className="w-full px-2.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:ring-1 focus:ring-purple-500"
+                      className="w-full px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs font-semibold focus:outline-none focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]"
                     />
                   </div>
                 </div>
@@ -418,7 +419,7 @@ const AIComposer: React.FC = () => {
                 <button
                   type="submit"
                   disabled={scheduling}
-                  className="w-full mt-2 py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition shadow-md shadow-purple-900/30 flex items-center justify-center gap-2 disabled:opacity-60"
+                  className="w-full mt-2 py-3 px-4 rounded-xl font-bold text-xs text-white btn-primary-orange flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                 >
                   {scheduling ? (
                     <>

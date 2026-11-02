@@ -80,8 +80,8 @@ const Dashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-3 border-purple-500/20 border-t-purple-500" />
-        <p className="mt-4 text-sm font-medium text-slate-400">Loading your dashboard...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-3 border-[#5c4ce9]/20 border-t-[#5c4ce9]" />
+        <p className="mt-4 text-sm font-semibold text-indigo-950">Loading your dashboard...</p>
       </div>
     );
   }
@@ -135,64 +135,68 @@ const Dashboard: React.FC = () => {
       <section>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Total Posts */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-sm hover:border-slate-700/80 transition relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-xl group-hover:bg-purple-500/10 transition" />
+          <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xl shadow-indigo-950/5 border border-indigo-100/70 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-950/10 transition-all duration-300 relative overflow-hidden group">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-400">Total Posts</span>
-              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Total Posts
+              </span>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#5c4ce9] to-[#7c3aed] text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/25">
                 <FileText className="h-5 w-5" />
               </div>
             </div>
-            <div className="mt-4">
-              <span className="text-3xl font-extrabold text-white tracking-tight">
+            <div className="mt-3">
+              <span className="text-3xl sm:text-4xl font-black text-indigo-950 tracking-tight">
                 {totalPosts}
               </span>
             </div>
           </div>
 
           {/* Scheduled Posts */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-sm hover:border-slate-700/80 transition relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl group-hover:bg-indigo-500/10 transition" />
+          <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xl shadow-indigo-950/5 border border-indigo-100/70 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-950/10 transition-all duration-300 relative overflow-hidden group">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-400">Scheduled</span>
-              <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Scheduled
+              </span>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#fbbf24] to-[#f97316] text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/25">
                 <Clock className="h-5 w-5" />
               </div>
             </div>
-            <div className="mt-4">
-              <span className="text-3xl font-extrabold text-white tracking-tight">
+            <div className="mt-3">
+              <span className="text-3xl sm:text-4xl font-black text-indigo-950 tracking-tight">
                 {scheduledCount}
               </span>
             </div>
           </div>
 
           {/* Published Posts */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-sm hover:border-slate-700/80 transition relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition" />
+          <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xl shadow-indigo-950/5 border border-indigo-100/70 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-950/10 transition-all duration-300 relative overflow-hidden group">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-400">Published</span>
-              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Published
+              </span>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
             </div>
-            <div className="mt-4">
-              <span className="text-3xl font-extrabold text-white tracking-tight">
+            <div className="mt-3">
+              <span className="text-3xl sm:text-4xl font-black text-indigo-950 tracking-tight">
                 {publishedCount}
               </span>
             </div>
           </div>
 
           {/* Connected Accounts */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-sm hover:border-slate-700/80 transition relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-xl group-hover:bg-pink-500/10 transition" />
+          <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xl shadow-indigo-950/5 border border-indigo-100/70 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-950/10 transition-all duration-300 relative overflow-hidden group">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-400">Connected Accounts</span>
-              <div className="p-2.5 rounded-xl bg-pink-500/10 text-pink-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Connected Accounts
+              </span>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-500 to-pink-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-pink-500/25">
                 <Users className="h-5 w-5" />
               </div>
             </div>
-            <div className="mt-4">
-              <span className="text-3xl font-extrabold text-white tracking-tight">
+            <div className="mt-3">
+              <span className="text-3xl sm:text-4xl font-black text-indigo-950 tracking-tight">
                 {connectedAccountsCount}
               </span>
             </div>
@@ -201,32 +205,36 @@ const Dashboard: React.FC = () => {
       </section>
 
       {/* SECTION 2 — Connected Accounts row */}
-      <section className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-5">
+      <section className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-950/5 border border-indigo-100/70">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-bold text-white">Connected Accounts</h2>
-            <p className="text-xs text-slate-400">Social channels linked to your workspace</p>
+            <h2 className="text-lg sm:text-xl font-black text-indigo-950 tracking-tight">
+              Connected Accounts
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Social channels linked to your workspace
+            </p>
           </div>
           <Link
             to="/accounts"
-            className="text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-1 transition"
+            className="text-xs sm:text-sm font-bold text-[#f97316] hover:text-[#ea580c] flex items-center gap-1 transition"
           >
-            Manage Accounts <ArrowUpRight className="h-3.5 w-3.5" />
+            Manage Accounts <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
 
         {accounts.length === 0 ? (
-          <div className="text-center py-8 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-950/40">
-            <div className="p-3 bg-slate-900 rounded-full w-fit mx-auto text-slate-500 mb-3">
+          <div className="text-center py-10 px-4 border-2 border-dashed border-indigo-200/80 rounded-2xl bg-indigo-50/20">
+            <div className="p-3 bg-orange-50 rounded-full w-fit mx-auto text-[#f97316] mb-3">
               <Share2 className="h-6 w-6" />
             </div>
-            <p className="text-sm font-semibold text-slate-300">No accounts connected</p>
+            <p className="text-sm font-bold text-indigo-950">No accounts connected yet</p>
             <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
               Connect your social profiles (Twitter, Instagram, LinkedIn, etc.) to start publishing.
             </p>
             <Link
               to="/accounts"
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 transition shadow-lg shadow-purple-900/30"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white btn-primary-orange"
             >
               <Plus className="h-3.5 w-3.5" /> Connect First Account
             </Link>
@@ -236,24 +244,24 @@ const Dashboard: React.FC = () => {
             {accounts.map((acc) => (
               <div
                 key={acc._id}
-                className="flex items-center gap-3.5 p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition"
+                className="flex items-center gap-3.5 p-4 rounded-2xl bg-indigo-50/40 border border-indigo-100/80 hover:border-indigo-300 hover:bg-white transition-all shadow-xs"
               >
                 {/* Avatar / Icon */}
                 {acc.avatarUrl ? (
                   <img
                     src={acc.avatarUrl}
                     alt={acc.handle}
-                    className="h-10 w-10 rounded-full object-cover ring-2 ring-purple-500/20"
+                    className="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-200"
                   />
                 ) : (
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center font-bold text-white text-sm uppercase">
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-[#5c4ce9] to-[#7c3aed] flex items-center justify-center font-bold text-white text-sm uppercase shadow-sm">
                     {acc.platform.charAt(0)}
                   </div>
                 )}
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold uppercase tracking-wider text-purple-300 truncate">
+                    <span className="text-xs font-black uppercase tracking-wider text-[#5c4ce9] truncate">
                       {acc.platform}
                     </span>
                     {/* Status dot */}
@@ -262,7 +270,7 @@ const Dashboard: React.FC = () => {
                       className="h-2 w-2 rounded-full bg-emerald-500 shrink-0"
                     />
                   </div>
-                  <p className="text-sm font-semibold text-slate-200 truncate mt-0.5">
+                  <p className="text-sm font-bold text-indigo-950 truncate mt-0.5">
                     @{acc.handle}
                   </p>
                 </div>
@@ -275,23 +283,27 @@ const Dashboard: React.FC = () => {
       {/* 2-Column Grid: Upcoming Scheduled Posts & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* SECTION 3 — Upcoming Scheduled Posts */}
-        <section className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+        <section className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-950/5 border border-indigo-100/70 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-bold text-white">Upcoming Scheduled Posts</h2>
-                <p className="text-xs text-slate-400">Queue awaiting publication</p>
+                <h2 className="text-lg sm:text-xl font-black text-indigo-950 tracking-tight">
+                  Upcoming Scheduled Posts
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                  Queue awaiting automated publication
+                </p>
               </div>
               <div className="flex items-center gap-3">
                 <Link
                   to="/ai-composer"
-                  className="text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-1 transition"
+                  className="text-xs font-bold text-[#f97316] hover:text-[#ea580c] flex items-center gap-1 transition"
                 >
                   <Sparkles className="h-3.5 w-3.5" /> AI Composer
                 </Link>
                 <Link
                   to="/scheduler"
-                  className="text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1 transition"
+                  className="text-xs font-bold text-[#5c4ce9] hover:text-[#4534cf] flex items-center gap-1 transition"
                 >
                   View All <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
@@ -299,17 +311,17 @@ const Dashboard: React.FC = () => {
             </div>
 
             {upcomingPosts.length === 0 ? (
-              <div className="text-center py-12 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-950/40">
-                <div className="p-3 bg-slate-900 rounded-full w-fit mx-auto text-slate-500 mb-3">
+              <div className="text-center py-12 px-4 border-2 border-dashed border-indigo-200/80 rounded-2xl bg-indigo-50/20">
+                <div className="p-3 bg-indigo-50 rounded-full w-fit mx-auto text-[#5c4ce9] mb-3">
                   <Calendar className="h-6 w-6" />
                 </div>
-                <p className="text-sm font-semibold text-slate-300">No upcoming posts</p>
+                <p className="text-sm font-bold text-indigo-950">No upcoming posts</p>
                 <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
                   Your publishing queue is currently clear. Schedule a manual or AI-generated post.
                 </p>
                 <Link
                   to="/scheduler"
-                  className="mt-4 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 transition shadow-md shadow-purple-900/30"
+                  className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white btn-primary-orange"
                 >
                   <Plus className="h-3.5 w-3.5" /> Schedule a Post
                 </Link>
@@ -319,31 +331,31 @@ const Dashboard: React.FC = () => {
                 {upcomingPosts.map((post) => (
                   <div
                     key={post._id}
-                    className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition flex items-start gap-3.5"
+                    className="p-4 rounded-2xl bg-indigo-50/30 border border-indigo-100/80 hover:border-indigo-300 hover:bg-white transition flex items-start gap-3.5 shadow-xs"
                   >
                     {/* Media thumbnail if present */}
                     {post.mediaUrl && (
                       <img
                         src={post.mediaUrl}
                         alt="Post media"
-                        className="h-12 w-12 rounded-lg object-cover shrink-0 border border-slate-800"
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-indigo-100 shadow-xs"
                       />
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-slate-200 line-clamp-2 leading-relaxed">
+                      <p className="text-sm font-medium text-slate-800 line-clamp-2 leading-relaxed">
                         {post.content.length > 100
                           ? `${post.content.slice(0, 100)}...`
                           : post.content}
                       </p>
 
-                      <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-800/60">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-indigo-100/60">
                         {/* Platform badges */}
                         <div className="flex flex-wrap gap-1.5">
                           {post.platforms.map((plat) => (
                             <span
                               key={plat}
-                              className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-purple-500/10 text-purple-300 border border-purple-500/20"
+                              className="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-indigo-100/70 text-indigo-800 border border-indigo-200"
                             >
                               {plat}
                             </span>
@@ -351,8 +363,8 @@ const Dashboard: React.FC = () => {
                         </div>
 
                         {/* Scheduled time */}
-                        <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-purple-400" />
+                        <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5 text-[#f97316]" />
                           {formatDate(post.scheduledFor)}
                         </span>
                       </div>
@@ -365,23 +377,27 @@ const Dashboard: React.FC = () => {
         </section>
 
         {/* SECTION 4 — Recent Activity */}
-        <section className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-5">
+        <section className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-950/5 border border-indigo-100/70">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-white">Recent Activity</h2>
-              <p className="text-xs text-slate-400">Latest platform events and logs</p>
+              <h2 className="text-lg sm:text-xl font-black text-indigo-950 tracking-tight">
+                Recent Activity
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                Latest platform events and logs
+              </p>
             </div>
-            <div className="p-2 rounded-xl bg-slate-800/50 text-slate-400">
-              <Activity className="h-4 w-4" />
+            <div className="p-2.5 rounded-xl bg-orange-50 text-[#f97316]">
+              <Activity className="h-5 w-5" />
             </div>
           </div>
 
           {activity.length === 0 ? (
-            <div className="text-center py-12 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-950/40">
-              <div className="p-3 bg-slate-900 rounded-full w-fit mx-auto text-slate-500 mb-3">
+            <div className="text-center py-12 px-4 border-2 border-dashed border-indigo-200/80 rounded-2xl bg-indigo-50/20">
+              <div className="p-3 bg-indigo-50 rounded-full w-fit mx-auto text-[#5c4ce9] mb-3">
                 <Activity className="h-6 w-6" />
               </div>
-              <p className="text-sm font-semibold text-slate-300">No recent activity</p>
+              <p className="text-sm font-bold text-indigo-950">No recent activity</p>
               <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
                 Activities such as publishing posts and AI replies will appear here in real time.
               </p>
@@ -391,18 +407,18 @@ const Dashboard: React.FC = () => {
               {activity.map((act) => (
                 <div
                   key={act._id}
-                  className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between gap-3 hover:border-slate-700 transition"
+                  className="p-3.5 rounded-2xl bg-indigo-50/30 border border-indigo-100/80 flex items-center justify-between gap-3 hover:border-indigo-200 hover:bg-white transition shadow-xs"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shrink-0">
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-orange-50 text-[#ea580c] border border-orange-200/70 shrink-0">
                       {act.actionType.replace('_', ' ')}
                     </span>
-                    <p className="text-xs sm:text-sm text-slate-300 truncate">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                       {act.description}
                     </p>
                   </div>
 
-                  <span className="text-[11px] font-medium text-slate-500 shrink-0">
+                  <span className="text-[11px] font-semibold text-slate-400 shrink-0">
                     {formatTimeAgo(act.createdAt)}
                   </span>
                 </div>

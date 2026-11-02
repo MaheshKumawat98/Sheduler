@@ -1,1 +1,131 @@
 @import "tailwindcss";
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+}
+
+@layer base {
+  :root {
+    --brand-purple: #5c4ce9;
+    --brand-purple-dark: #4534cf;
+    --brand-indigo-navy: #1e1b4b;
+    --brand-orange: #f97316;
+    --brand-orange-light: #fb923c;
+    --brand-orange-dark: #ea580c;
+    --brand-amber: #fbbf24;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+.font-caveat {
+  font-family: 'Caveat', cursive, sans-serif;
+}
+
+/* =========================================================================
+   Shared SaaS Design System Utilities (Derived from Finalized Home Page)
+   ========================================================================= */
+
+/* Main Cards */
+.saas-card {
+  background-color: #ffffff;
+  border-radius: 1.5rem; /* 24px */
+  border: 1px solid rgba(224, 231, 255, 0.7); /* border-indigo-100/70 */
+  box-shadow: 0 10px 30px -5px rgba(30, 27, 75, 0.05);
+  transition: all 0.25s ease-out;
+}
+
+.saas-card:hover {
+  border-color: rgba(199, 210, 254, 0.9);
+}
+
+/* Feature/Stat Cards with gentle interactive lift */
+.saas-stat-card {
+  background-color: #ffffff;
+  border-radius: 1.25rem; /* 20px */
+  border: 1px solid rgba(224, 231, 255, 0.7);
+  box-shadow: 0 4px 20px -2px rgba(30, 27, 75, 0.04);
+  transition: all 0.25s ease-out;
+}
+
+.saas-stat-card:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 12px 28px -4px rgba(30, 27, 75, 0.08);
+  border-color: rgba(199, 210, 254, 1);
+}
+
+/* Inner Light Panel / Well */
+.saas-subpanel {
+  background-color: rgba(238, 242, 255, 0.35); /* indigo-50/35 */
+  border: 1px solid rgba(224, 231, 255, 0.8);
+  border-radius: 1rem;
+}
+
+/* Primary CTA Button (Warm Orange Gradient) */
+.btn-primary-orange {
+  background: linear-gradient(to right, #fb923c, #f97316, #ea580c);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.3);
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+}
+
+.btn-primary-orange:hover {
+  background: linear-gradient(to right, #f97316, #ea580c, #c2410c);
+  box-shadow: 0 6px 20px 0 rgba(249, 115, 22, 0.4);
+}
+
+.btn-primary-orange:active {
+  transform: scale(0.98);
+}
+
+/* Secondary CTA Button (Vibrant Purple/Indigo Gradient) */
+.btn-primary-purple {
+  background: linear-gradient(to right, #5c4ce9, #5143e2, #4534cf);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px 0 rgba(92, 76, 233, 0.25);
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+}
+
+.btn-primary-purple:hover {
+  background: linear-gradient(to right, #5143e2, #4534cf, #3729b8);
+  box-shadow: 0 6px 20px 0 rgba(92, 76, 233, 0.35);
+}
+
+.btn-primary-purple:active {
+  transform: scale(0.98);
+}
+
+/* Input Fields */
+.input-saas {
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background-color: rgba(248, 250, 252, 0.6);
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.input-saas:focus {
+  background-color: #ffffff;
+  border-color: #f97316;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}

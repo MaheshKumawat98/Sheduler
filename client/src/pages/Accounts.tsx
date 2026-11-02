@@ -102,8 +102,8 @@ const Accounts: React.FC = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-3 border-purple-500/20 border-t-purple-500" />
-        <p className="mt-4 text-sm font-medium text-slate-400">Loading social accounts...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-3 border-[#5c4ce9]/20 border-t-[#5c4ce9]" />
+        <p className="mt-4 text-sm font-semibold text-indigo-950">Loading social accounts...</p>
       </div>
     );
   }
@@ -111,17 +111,17 @@ const Accounts: React.FC = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Top Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-indigo-100/70">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-indigo-950 tracking-tight">
               Social Accounts
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/10 text-purple-300 border border-purple-500/20">
-              {accounts.length} {accounts.length === 1 ? 'Connected' : 'Connected'}
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/70">
+              {accounts.length} Connected
             </span>
           </div>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Connect and manage social media profiles for automated cross-platform posting.
           </p>
         </div>
@@ -131,14 +131,14 @@ const Accounts: React.FC = () => {
             onClick={syncAccounts}
             disabled={syncing}
             title="Sync accounts from provider"
-            className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition disabled:opacity-50"
+            className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-indigo-950 hover:border-indigo-300 shadow-sm transition disabled:opacity-50 cursor-pointer"
           >
-            <RefreshCw className={`h-4 w-4 ${syncing ? 'animate-spin text-purple-400' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${syncing ? 'animate-spin text-[#5c4ce9]' : ''}`} />
           </button>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition shadow-lg shadow-purple-900/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-white btn-primary-orange"
           >
             <Plus className="h-4 w-4" />
             <span>Connect Account</span>

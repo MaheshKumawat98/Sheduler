@@ -15,13 +15,13 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const getPageTitle = (path: string): string => {
     switch (path) {
       case '/dashboard':
-        return 'Dashboard';
+        return 'Dashboard Overview';
       case '/accounts':
         return 'Connected Accounts';
       case '/scheduler':
         return 'Post Scheduler';
       case '/ai-composer':
-        return 'AI Composer';
+        return 'AI Post Composer';
       default:
         return 'Social Media Platform';
     }
@@ -31,34 +31,36 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   return (
-    <header className="sticky top-0 z-30 h-16 w-full bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 flex items-center justify-between">
+    <header className="sticky top-0 z-30 h-16 sm:h-20 w-full bg-white/80 backdrop-blur-md border-b border-indigo-100/70 px-4 sm:px-8 flex items-center justify-between">
       {/* Left: Mobile hamburger & dynamic page title */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle Navigation"
-          className="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none"
+          className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-indigo-950 hover:bg-indigo-50/70 transition focus:outline-none cursor-pointer"
         >
           <Menu className="h-5 w-5" />
         </button>
-        <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-          {title}
-        </h1>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-indigo-950">
+            {title}
+          </h1>
+        </div>
       </div>
 
       {/* Right: User name & circle avatar */}
       <div className="flex items-center gap-3">
         <div className="text-right hidden sm:block">
-          <p className="text-sm font-semibold text-slate-100 leading-none">
+          <p className="text-sm font-bold text-indigo-950 leading-tight">
             {user?.name || 'User'}
           </p>
-          <p className="text-xs text-slate-400 mt-1 leading-none">
+          <p className="text-xs text-slate-500 mt-0.5 leading-tight font-medium">
             {user?.email || ''}
           </p>
         </div>
 
-        {/* Colored Circle Avatar with first letter */}
-        <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-purple-900/30 ring-2 ring-purple-500/30">
+        {/* Vibrant Orange Circle Avatar with user initial */}
+        <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-[#fb923c] to-[#f97316] text-white flex items-center justify-center font-black text-sm shadow-md shadow-orange-500/25 ring-2 ring-white shrink-0 select-none">
           {userInitial}
         </div>
       </div>

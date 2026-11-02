@@ -6,9 +6,9 @@ import {
   Calendar,
   Sparkles,
   LogOut,
-  Zap,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { AutoPostLogo } from './AutoPostLogo';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -37,30 +37,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-indigo-950/40 backdrop-blur-sm z-40 lg:hidden"
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-indigo-100/80 flex flex-col justify-between shadow-xl shadow-indigo-950/5 transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Top: Logo & Brand */}
         <div>
-          <div className="h-16 px-6 flex items-center gap-3 border-b border-slate-800/80">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow-md shadow-purple-900/40">
-              <Zap className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <span className="text-xl font-extrabold tracking-tight text-white">
-                AutoPost
-              </span>
-              <span className="ml-1 text-[10px] font-semibold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded">
-                AI
-              </span>
-            </div>
+          <div className="h-20 px-6 flex items-center border-b border-indigo-100/70">
+            <AutoPostLogo variant="dark" size="sm" />
           </div>
 
           {/* Navigation Links */}
@@ -73,15 +63,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
                   to={item.path}
                   onClick={onClose}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                    `group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
                       isActive
-                        ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/30'
-                        : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
+                        ? 'bg-gradient-to-r from-[#5c4ce9] to-[#5143e2] text-white shadow-md shadow-indigo-600/25'
+                        : 'text-slate-600 hover:text-indigo-950 hover:bg-indigo-50/70'
                     }`
                   }
                 >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.name}</span>
+                  {({ isActive }) => (
+                    <>
+                      <Icon
+                        className={`h-4.5 w-4.5 transition-colors ${
+                          isActive
+                            ? 'text-white'
+                            : 'text-slate-400 group-hover:text-[#5c4ce9]'
+                        }`}
+                      />
+                      <span>{item.name}</span>
+                    </>
+                  )}
                 </NavLink>
               );
             })}
@@ -89,12 +89,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
         </div>
 
         {/* Bottom: Logout */}
-        <div className="p-4 border-t border-slate-800/80">
+        <div className="p-4 border-t border-indigo-100/70">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition group"
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-red-600 hover:bg-red-50/80 transition group cursor-pointer"
           >
-            <LogOut className="h-4 w-4 text-slate-400 group-hover:text-red-400 transition" />
+            <LogOut className="h-4.5 w-4.5 text-slate-400 group-hover:text-red-500 transition" />
             <span>Sign Out</span>
           </button>
         </div>

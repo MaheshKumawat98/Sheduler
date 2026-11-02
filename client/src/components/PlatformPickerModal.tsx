@@ -36,29 +36,29 @@ const platforms = [
   {
     id: 'twitter',
     name: 'Twitter / X',
-    color: 'hover:border-sky-500 hover:text-sky-400 hover:bg-sky-500/10',
-    iconColor: 'text-sky-400',
+    color: 'hover:border-sky-400 hover:text-sky-600 hover:bg-sky-50/50',
+    iconColor: 'text-sky-500',
     icon: TwitterIcon,
   },
   {
     id: 'linkedin',
     name: 'LinkedIn',
-    color: 'hover:border-blue-500 hover:text-blue-400 hover:bg-blue-500/10',
-    iconColor: 'text-blue-400',
+    color: 'hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50/50',
+    iconColor: 'text-blue-600',
     icon: LinkedInIcon,
   },
   {
     id: 'facebook',
     name: 'Facebook',
-    color: 'hover:border-indigo-500 hover:text-indigo-400 hover:bg-indigo-500/10',
-    iconColor: 'text-indigo-400',
+    color: 'hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50/50',
+    iconColor: 'text-indigo-600',
     icon: FacebookIcon,
   },
   {
     id: 'instagram',
     name: 'Instagram',
-    color: 'hover:border-pink-500 hover:text-pink-400 hover:bg-pink-500/10',
-    iconColor: 'text-pink-400',
+    color: 'hover:border-pink-400 hover:text-pink-600 hover:bg-pink-50/50',
+    iconColor: 'text-pink-600',
     icon: InstagramIcon,
   },
 ];
@@ -71,17 +71,17 @@ const PlatformPickerModal: React.FC<PlatformPickerModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-7 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-indigo-950/40 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-md bg-white border border-indigo-100 rounded-3xl p-6 sm:p-7 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-indigo-100/70">
           <div>
-            <h3 className="text-lg font-bold text-white">Connect a Social Account</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Select a network to authorize via OAuth</p>
+            <h3 className="text-lg font-black text-indigo-950">Connect a Social Account</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Select a network to authorize via OAuth</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition focus:outline-none cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -98,9 +98,9 @@ const PlatformPickerModal: React.FC<PlatformPickerModalProps> = ({
                   onSelect(plat.id);
                   onClose();
                 }}
-                className={`flex flex-col items-center justify-center gap-3 p-5 rounded-xl bg-slate-950/70 border border-slate-800/80 text-slate-200 transition-all duration-200 group active:scale-95 ${plat.color}`}
+                className={`flex flex-col items-center justify-center gap-3 p-5 rounded-2xl bg-indigo-50/30 border border-indigo-100/80 text-slate-700 transition-all duration-200 group active:scale-95 cursor-pointer ${plat.color}`}
               >
-                <div className={`p-2.5 rounded-xl bg-slate-900 group-hover:scale-110 transition ${plat.iconColor}`}>
+                <div className={`p-2.5 rounded-xl bg-white shadow-xs group-hover:scale-110 transition ${plat.iconColor}`}>
                   <Icon />
                 </div>
                 <span className="text-xs font-bold tracking-wide">{plat.name}</span>
@@ -110,7 +110,7 @@ const PlatformPickerModal: React.FC<PlatformPickerModalProps> = ({
         </div>
 
         {/* Footer info */}
-        <p className="text-[11px] text-center text-slate-500">
+        <p className="text-[11px] text-center text-slate-400">
           You will be redirected to the provider to authorize access securely.
         </p>
       </div>

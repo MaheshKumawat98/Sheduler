@@ -15,10 +15,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100">
+      <div className="flex items-center justify-center min-h-screen bg-[#f8f9fd] text-slate-900">
         <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-10 w-10 border-3 border-purple-500/20 border-t-purple-500" />
-          <span className="text-sm font-medium text-slate-400">Loading session...</span>
+          <div className="animate-spin rounded-full h-10 w-10 border-3 border-[#5c4ce9]/20 border-t-[#5c4ce9]" />
+          <span className="text-sm font-semibold text-indigo-950">Loading workspace...</span>
         </div>
       </div>
     );
@@ -30,7 +30,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex">
+    <div className="min-h-screen bg-[#f8f9fd] text-slate-900 flex selection:bg-[#f97316] selection:text-white relative overflow-x-hidden">
+      {/* Subtle brand ambient glow at the top matching Home page theme */}
+      <div className="absolute top-0 right-0 left-0 h-96 bg-gradient-to-b from-indigo-100/50 via-purple-50/30 to-transparent pointer-events-none" />
+
       {/* Fixed Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -38,9 +41,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen lg:ml-64 w-full">
+      <div className="flex-1 flex flex-col min-h-screen lg:ml-64 w-full relative z-10">
         <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-6 sm:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
           {children || <Outlet />}
         </main>
       </div>

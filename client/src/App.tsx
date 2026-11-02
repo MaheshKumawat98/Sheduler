@@ -15,8 +15,8 @@ const RootRedirect: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100">
-        <div className="animate-spin rounded-full h-10 w-10 border-3 border-purple-500/20 border-t-purple-500" />
+      <div className="flex items-center justify-center min-h-screen bg-[#f8f9fd] text-slate-900">
+        <div className="animate-spin rounded-full h-10 w-10 border-3 border-[#5c4ce9]/20 border-t-[#5c4ce9]" />
       </div>
     );
   }
@@ -27,7 +27,21 @@ const RootRedirect: React.FC = () => {
 function App() {
   return (
     <AuthProvider>
-      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#ffffff',
+            color: '#1e1b4b',
+            boxShadow: '0 10px 30px -5px rgba(30, 27, 75, 0.1)',
+            borderRadius: '1rem',
+            border: '1px solid #e0e7ff',
+            fontSize: '13px',
+            fontWeight: '600',
+          },
+        }}
+      />
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
